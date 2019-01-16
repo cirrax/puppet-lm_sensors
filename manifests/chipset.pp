@@ -2,7 +2,8 @@
 define lm_sensors::chipset (
   Array $chip_configs,
   Enum['present', 'absent'] $ensure,
-  String $chip = $title,
+  String $chip     = $title,
+  String $filename = '',
 ) {
 
   if $::virtual == 'physical' {
@@ -14,6 +15,12 @@ define lm_sensors::chipset (
       $real_ensure = 'absent'
     }
 
+    if $filename == '' {
+      $_filename = "chip_${chip}"
+    } else {
+      $_filename = $filename
+    }
+
     # create sensors.d dir & chipset file
     file {
       $::lm_sensors::sensorsd_dir:
@@ -22,7 +29,7 @@ define lm_sensors::chipset (
         group   => 'root',
         mode    => '0755',
         require => Package[$::lm_sensors::package];
-      "${::lm_sensors::sensorsd_dir}/chip_${chip}.conf":
+      "${::lm_sensors::sensorsd_dir}/${_filename}.conf":
         ensure  => $real_ensure,
         owner   => 'root',
         group   => 'root',
