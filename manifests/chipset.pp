@@ -21,14 +21,14 @@ define lm_sensors::chipset (
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        require => Package['lm_sensors'];
+        require => Package[$::lm_sensors::package];
       "${::lm_sensors::sensorsd_dir}/chip_${chip}.conf":
         ensure  => $real_ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         require => File[$::lm_sensors::sensorsd_dir],
-        notify  => Service['lm_sensors'],
+        notify  => Service[$::lm_sensors::service_name],
         content => template('lm_sensors/chipset.conf');
     }
   }
