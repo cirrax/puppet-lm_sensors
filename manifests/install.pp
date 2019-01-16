@@ -14,4 +14,13 @@ class lm_sensors::install {
     notify  => Service[$lm_sensors::service_name],
     require => Package[$lm_sensors::package],
   }
+
+  # create directory for custom configs
+  file { $::lm_sensors::sensorsd_dir:
+     ensure  => directory,
+     owner   => 'root',
+     group   => 'root',
+     mode    => '0755',
+     require => Package[$::lm_sensors::package];
+  }
 }

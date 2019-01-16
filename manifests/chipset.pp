@@ -22,14 +22,7 @@ define lm_sensors::chipset (
     }
 
     # create sensors.d dir & chipset file
-    file {
-      $::lm_sensors::sensorsd_dir:
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => Package[$::lm_sensors::package];
-      "${::lm_sensors::sensorsd_dir}/${_filename}.conf":
+    file { "${::lm_sensors::sensorsd_dir}/${_filename}.conf":
         ensure  => $real_ensure,
         owner   => 'root',
         group   => 'root',
