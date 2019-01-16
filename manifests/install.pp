@@ -1,5 +1,8 @@
 # Install lm_sensors package and scan for sensors
-class lm_sensors::install {
+class lm_sensors::install (
+  Boolean $purge       = false,
+  Array   $ignore_purge = [], 
+) {
   # Install lm_sensors
 
   ensure_packages ($::lm_sensors::package, {
@@ -21,6 +24,9 @@ class lm_sensors::install {
      owner   => 'root',
      group   => 'root',
      mode    => '0755',
+     purge   => $purge,
+     recurse => $purge,
+     ignore  => $ignore_purge,
      require => Package[$::lm_sensors::package];
   }
 }
